@@ -68,5 +68,4 @@ public class Rotate3dAnimation extends Animation {
         matrix.postTranslate(this.width, this.height);
     }
 
-
 }
