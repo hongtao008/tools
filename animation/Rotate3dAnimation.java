@@ -23,12 +23,11 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 public class Rotate3dAnimation extends Animation {
+ 
     private final float fromXDegrees;
     private final float toXDegrees;
     private final float fromYDegrees;
-    private final float toYDegrees;
-    private final float fromZDegrees;
-    private final float toZDegrees;
+
     private Camera camera;
     private int width = 0;
     private int height = 0;
@@ -43,14 +42,6 @@ public class Rotate3dAnimation extends Animation {
     }
 
     @Override
-    public void initialize(int width, int height, int parentWidth, int parentHeight) {
-        super.initialize(width, height, parentWidth, parentHeight);
-        this.width = 0;
-        this.height = 0;
-        camera = new Camera();
-    }
-
-    @Override
     protected void applyTransformation(float interpolatedTime, Transformation t) {
         float xDegrees = fromXDegrees + ((toXDegrees - fromXDegrees) * interpolatedTime);
         float yDegrees = fromYDegrees + ((toYDegrees - fromYDegrees) * interpolatedTime);
@@ -59,13 +50,30 @@ public class Rotate3dAnimation extends Animation {
         final Matrix matrix = t.getMatrix();
 
         camera.save();
+        
+                camera.rotateZ(zDegrees);
+        camera.getMatrix(matrix);
         camera.rotateX(xDegrees);
         camera.rotateY(yDegrees);
-        camera.rotateZ(zDegrees);
-        camera.getMatrix(matrix);
+
         camera.restore();
         matrix.preTranslate(-this.width, -this.height);
         matrix.postTranslate(this.width, this.height);
     }
+    
+    @Override
+    public void initialize(int width, int height, int parentWidth, int parentHeight) {
+        super.initialize(width, height, parentWidth, parentHeight);
+                this.height = 0;
+        this.width = 0;
+
+
+
+
+
+        camera = new Camera();
+    }
+
+
 
 }
